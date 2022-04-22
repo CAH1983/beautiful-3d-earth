@@ -1,5 +1,8 @@
 import React from 'react';
 import {useLoader} from '@react-three/fiber';
+import {OrbitControls, Stars} from '@react-three/drei';
+import * as THREE from 'three';
+ 
 import EarthDayMap from '../../ASSETS/TEXTURES/8k_earth_daymap.jpg';
 import EarthNightMap from '../../ASSETS/TEXTURES/8k_earth_nightmap.jpg';
 import EarthNormalMap from '../../ASSETS/TEXTURES/8k_earth_normal_map.jpg';
@@ -8,14 +11,47 @@ import EarthCloudsMap from '../../ASSETS/TEXTURES/8k_earth_clouds.jpg';
 import {TextureLoader} from 'three';
 
 export function Earth(props) {
-    const [colorMap, normalMap, specularMap, cloudsMap] = useLoader(TextureLoader, [EarthDayMap, EarthNormalMap, EarthSpecMap, EarthNightMap, EarthCloudsMap]);
+    const [colorMap, normalMap, specularMap, cloudsMap] = useLoader(TextureLoader, [EarthDayMap, EarthNormalMap, EarthSpecMap, EarthCloudsMap]);
     return (
         <>
-        <ambientLight intensity={0.5}/>
+        {/* <ambientLight intensity={1}/> */}
+        <pointLight color='#f6f3ea' position={[2,0,5]} intensity={1.2} />
+        <Stars
+            radius={300}
+            depth={60}
+            count={20000}
+            factor={7}
+            saturation={0}
+            fade={true}
+        />
+
             <mesh>
-                <sphereGeometry args={[1,32,32]}/>
+                <sphereGeometry args={[1.005,40,40]}/>
+                <meshPhongMaterial 
+                    map={cloudsMap} 
+                    opacity={0.3} 
+                    depthWrite={true} 
+                    transparent={true} 
+                    side={THREE.DoubleSide}
+                />
+            </mesh>
+
+            <mesh>
+                <sphereGeometry args={[1,40,40]}/>
                 <meshPhongMaterial specularMap={specularMap}/>
-                <meshStandardMaterial map={colorMap} normalMap={normalMap}/>
+                <meshStandardMaterial 
+                    map={colorMap} 
+                    normalMap={normalMap}
+                />
+                
+                <OrbitControls
+                    enableZoom={true}
+                    enablePan={true}
+                    enableRotate={true}
+                    zoomSpeed={0.6}
+                    panSpeed={0.5}
+                    rotateSpeed={0.4}
+                />
 
             </mesh>
         </>
