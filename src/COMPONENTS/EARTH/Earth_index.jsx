@@ -1,20 +1,31 @@
-import React from 'react';
-import {useLoader} from '@react-three/fiber';
+import React,  { useRef } from 'react';
+import {useFrame, useLoader} from '@react-three/fiber';
 import {OrbitControls, Stars} from '@react-three/drei';
 import * as THREE from 'three';
  
-import EarthDayMap from '../../ASSETS/TEXTURES/8k_earth_daymap.jpg';
-import EarthNightMap from '../../ASSETS/TEXTURES/8k_earth_nightmap.jpg';
-import EarthNormalMap from '../../ASSETS/TEXTURES/8k_earth_normal_map.jpg';
-import EarthSpecMap from '../../ASSETS/TEXTURES/8k_earth_specular_map.jpg';
-import EarthCloudsMap from '../../ASSETS/TEXTURES/8k_earth_clouds.jpg';
+import EarthDayMap from '../../ASSETS/Textures/8k_earth_daymap.jpg';
+import EarthNightMap from '../../ASSETS/Textures/8k_earth_nightmap.jpg';
+import EarthNormalMap from '../../ASSETS/Textures/8k_earth_normal_map.jpg';
+import EarthSpecMap from '../../ASSETS/Textures/8k_earth_specular_map.jpg';
+import EarthCloudsMap from '../../ASSETS/Textures/8k_earth_clouds.jpg';
 import {TextureLoader} from 'three';
 
 export function Earth(props) {
     const [colorMap, normalMap, specularMap, cloudsMap] = useLoader(TextureLoader, [EarthDayMap, EarthNormalMap, EarthSpecMap, EarthCloudsMap]);
+
+    const earthRef = useRef();
+    const cloudsRef = useRef();
+
+    useFrame( ({clock} ) => {
+        const elapsedTime = clock.getElapsedTime();
+        earthRef.current.rotation.y = cloudsRef.current.rotation.y = elapsedTime/6;
+
+    })
+
     return (
         <>
         {/* <ambientLight intensity={1}/> */}
+        {/* gives a spotlight on the earth */}
         <pointLight color='#f6f3ea' position={[2,0,5]} intensity={1.2} />
         <Stars
             radius={300}
@@ -24,8 +35,8 @@ export function Earth(props) {
             saturation={0}
             fade={true}
         />
-
-            <mesh>
+            {/* Clouds */}
+            <mesh ref={cloudsRef}>
                 <sphereGeometry args={[1.005,40,40]}/>
                 <meshPhongMaterial 
                     map={cloudsMap} 
@@ -36,14 +47,17 @@ export function Earth(props) {
                 />
             </mesh>
 
-            <mesh>
+            {/* earth */}
+            <mesh ref={earthRef}>
                 <sphereGeometry args={[1,40,40]}/>
                 <meshPhongMaterial specularMap={specularMap}/>
                 <meshStandardMaterial 
                     map={colorMap} 
                     normalMap={normalMap}
+                    metalness={0.4}
+                    roughness={0.7}
                 />
-                
+
                 <OrbitControls
                     enableZoom={true}
                     enablePan={true}
