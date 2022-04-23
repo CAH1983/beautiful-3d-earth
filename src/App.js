@@ -10,7 +10,9 @@ height: 100%;
 `
 
 function App() {
-  return <CanvasContainer>
+  return <>
+    
+    <CanvasContainer>
     <Canvas>
       <Suspense fallback={null}>
         <Earth/>
@@ -18,6 +20,9 @@ function App() {
 
     </Canvas>
     </CanvasContainer>
+
+
+  </>
 }
 
 export default App;

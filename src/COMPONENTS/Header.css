@@ -1,0 +1,10 @@
+.Header {
+    color: azure;
+    height: 20px;
+    background-color: transparent;
+    position: relative;
+    top: 50%;
+    right: 50%;
+    z-index: 1;
+    ;
+}
