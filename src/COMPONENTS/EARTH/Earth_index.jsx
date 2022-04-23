@@ -26,7 +26,7 @@ export function Earth(props) {
         <>
         {/* <ambientLight intensity={1}/> */}
         {/* gives a spotlight on the earth */}
-        <pointLight color='#f6f3ea' position={[2,0,5]} intensity={1.2} />
+        <pointLight color='white' position={[2,0,5]} intensity={1.5} />
         <Stars
             radius={300}
             depth={60}

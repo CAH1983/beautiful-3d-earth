@@ -1,3 +1,8 @@
-# Code-along React Magnificient 3D earth with ThreeJS
+# 3D earth with ThreeJS
 
-Trying to learn 3JS
+Tuto inspired 3D rotating earth, with some tweaks.
+
+Tech:
+* React-three-fiber
+* React-three-drei
+
